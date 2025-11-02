@@ -180,6 +180,7 @@ class Hand {
       document.getElementById("dubbleButton").setAttribute("disabled", true)
     }
     displayBets()
+    HANDPOOL.activateHand()
   }
 
   stand() {
@@ -288,6 +289,17 @@ class HandPool {
   }
   activateHand() {
     this.HAND = this.POOL[this.handIndex]
+    document.querySelectorAll('.activeBet').forEach(elem => {
+      elem.classList.remove('activeBet')
+    })
+    if (!this.HAND) {
+      return
+    }
+    let active = document.querySelector(`#bet-container [id='${this.HAND.placeId}']`)
+    if (!active) {
+      return
+    }
+    active.classList.add('activeBet')
   }
   async goNext() {
     this.handIndex += 1
@@ -409,16 +421,16 @@ async function func() {
 
 async function runGame(two,bet) {
   if (two) {
-    twoHand(bet).then(() => {
-      displayBets()
-      checkBlackJack()
-    })
+    await twoHand(bet)
+    displayBets()
+    checkBlackJack()
+    HANDPOOL.activateHand()
   }
   else {
-    oneHand(bet).then(() => {
-      displayBets()
-      checkBlackJack()
-    })
+    await oneHand(bet)
+    displayBets()
+    checkBlackJack()
+    HANDPOOL.activateHand()
   }
   
 }

@@ -776,3 +776,7 @@ body {
   overflow-x: hidden ;
   background-color: rgb(108, 176, 199);
 }
+
+#bet-container .activeBet {
+  border-bottom: 5px double yellow;
+}
